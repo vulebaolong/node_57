@@ -1,10 +1,17 @@
 const demoService = {
-    list: () => {
+    query: (query) => {
         // logic nghiệp vụ
-        
-        return "kết quả";
+        return query;
+    },
+    param: (param) => {
+        return param;
+    },
+    headers: (header) => {
+        return header;
+    },
+    body: (body) => {
+        return body;
     },
 };
 
-
-export default demoService
+export default demoService;

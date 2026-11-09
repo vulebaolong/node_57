@@ -156,5 +156,44 @@ WHERE "orders"."id" IS NULL
 -- LIMIT 3;
 
 
+SELECT "users"."fullName", COUNT("orders"."userId") as "Total Orders"
+FROM "users"
+INNER JOIN "orders"
+on "users"."id" = "orders"."userId"
+group by "users"."id", "orders"."userId"
+HAVING COUNT("orders"."userId") = (
+    SELECT MAX(total)
+    FROM (
+        SELECT COUNT(*) AS total
+        FROM "orders"
+        GROUP BY "userId"
+    ) AS temp
+);
+
 	
-	
+-- tìm người đặt hàng nhiều nhất
+EXPLAIN ANALYZE
+SELECT "orders"."userId", "email", "fullName", COUNT("orders"."userId")
+FROM "orders"
+INNER JOIN "users" on "users"."id" = "orders"."userId"
+GROUP BY "users"."id", "orders"."userId"
+HAVING COUNT("orders"."userId") = (
+	-- tìm số max lớn nhất
+	SELECT MAX(temp."count")
+	FROM (
+		SELECT COUNT("orders"."userId")
+		FROM "orders"
+		GROUP BY "orders"."userId"
+	) AS temp
+)
+
+
+-- MAX(COUNT("orders"."userId"))
+
+
+
+-- HAVING = WHERE
+
+
+
+
