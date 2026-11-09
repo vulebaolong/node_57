@@ -1,0 +1,55 @@
+// use prisma-8
+// Contract inferred from the live database schema. Edit as needed, then run `prisma contract emit`.
+
+model Users {
+  id         Int                                        @id(map: "user_pkey") @default(autoincrement())
+  email      String(storage: varchar, length: 255)      @unique(map: "user_email_unique")
+  fullName   String(storage: varchar, length: 255)?
+  avatar     String(storage: varchar, length: 255)?
+  password   String(storage: varchar, length: 255)?
+  googleId   String(storage: varchar, length: 255)?
+  totpSecret String?
+  createdAt  DateTime(storage: timestamp, precision: 6) @default(now())
+  updatedAt  DateTime(storage: timestamp, precision: 6) @default(now())
+  articles   Articles[]
+  orders     Orders[]
+
+  @@map("users")
+}
+
+model Articles {
+  id        Int                                        @id(map: "articles_pkey") @default(autoincrement())
+  title     String(storage: varchar, length: 255)?
+  content   String?
+  imageUrl  String(storage: varchar, length: 500)?
+  views     Int                                        @default(0)
+  userId    Int
+  createdAt DateTime(storage: timestamp, precision: 6) @default(now())
+  updatedAt DateTime(storage: timestamp, precision: 6) @default(now())
+  user      Users                                      @relation(fields: [userId], references: [id], map: "articles_userId_fkey", index: false)
+
+  @@map("articles")
+}
+
+model Foods {
+  id          Int                                        @id(map: "foods_pkey") @default(autoincrement())
+  name        String(storage: varchar, length: 255)?
+  description String?
+  createdAt   DateTime(storage: timestamp, precision: 6) @default(now())
+  updatedAt   DateTime(storage: timestamp, precision: 6) @default(now())
+  orders      Orders[]
+
+  @@map("foods")
+}
+
+model Orders {
+  id        Int                                        @id(map: "orders_pkey") @default(autoincrement())
+  userId    Int?
+  foodId    Int?
+  createdAt DateTime(storage: timestamp, precision: 6) @default(now())
+  updatedAt DateTime(storage: timestamp, precision: 6) @default(now())
+  food      Foods?                                     @relation(fields: [foodId], references: [id], map: "orders_foodId_fkey", index: false)
+  user      Users?                                     @relation(fields: [userId], references: [id], map: "orders_userId_fkey", index: false)
+
+  @@map("orders")
+}
