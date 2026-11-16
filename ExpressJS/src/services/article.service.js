@@ -1,12 +1,12 @@
 import articleRepository from "../repository/article.repository.js";
 
 const articleService = {
-    list: async ({ page, pageSize }) => {
+    list: async ({ page, pageSize, id, content, views }) => {
         const offset = (page - 1) * pageSize;
 
-        const data = await articleRepository.getList({ offset: offset, limit: pageSize });
+        const data = await articleRepository.getList({ offset: offset, limit: pageSize, id, content, views });
 
-        const totalItem = await articleRepository.count();
+        const totalItem = await articleRepository.count({ id, content, views });
 
         return {
             page: page,

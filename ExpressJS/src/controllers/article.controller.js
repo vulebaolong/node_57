@@ -5,8 +5,9 @@ import articleService from "../services/article.service.js";
 const articleController = {
     list: async (req, res, next) => {
         const { page, pageSize } = paginationValidate(req.query);
+        const { id, content, views } = req.query;
 
-        const result = await articleService.list({ page, pageSize });
+        const result = await articleService.list({ page, pageSize, id, content, views });
 
         const resData = reposponseSuccess(result, "Lấy danh sách Article thành công");
         res.status(resData.statusCode).json(resData);

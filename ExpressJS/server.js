@@ -1,6 +1,7 @@
 import express from "express";
 import rootRouter from "./src/routers/root.router.js";
 import cors from "cors";
+import { appError } from "./src/common/helpers/app_err.helper.js";
 
 const app = express();
 const port = 8000;
@@ -8,7 +9,10 @@ const port = 8000;
 app.use(express.json());
 
 app.use(cors({ origin: ["http://localhost:3000", "https://google.com"] }));
+
 app.use("/api", rootRouter);
+
+app.use(appError);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

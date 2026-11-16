@@ -6,3 +6,12 @@ export const reposponseSuccess = (data = null, message = "OK", statusCode = 200)
         data: data,
     };
 };
+
+export const responseError = (message = "Internal Server Error", statusCode = 500, stack = null) => {
+    return {
+        status: `error`,
+        statusCode: statusCode,
+        message: message,
+        stack: stack,
+    };
+};
