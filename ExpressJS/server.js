@@ -8,7 +8,7 @@ const port = 8000;
 
 app.use(express.json());
 
-app.use(cors({ origin: ["http://localhost:3000", "https://google.com"] }));
+app.use(cors({ origin: ["http://localhost:3000", "https://google.com"], credentials: true }));
 
 app.use("/api", rootRouter);
 

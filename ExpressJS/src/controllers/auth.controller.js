@@ -5,6 +5,9 @@ const authController = {
     register: async (req, res, next) => {
         const { fullName, email, password } = req.body;
         const result = await authService.register({ fullName, email, password });
+
+        delete result.password
+
         const resData = reposponseSuccess(result, "Đăng ký thành công");
         res.status(resData.statusCode).json(resData);
     },
